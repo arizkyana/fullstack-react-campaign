@@ -1,10 +1,12 @@
 {
   "compilerOptions": {
     "baseUrl": ".",
+    "checkJs": true,
+    "jsx": "react-jsx",
     "paths": {
-      "@/components/*": ["./src/components/*"],
-      "@/containers/*": ["./src/containers/*"],
-      "@/redux/*": ["./src/redux/*"]
+      "@/components/*": ["src/components/*"],
+      "@/containers/*": ["src/containers/*"],
+      "@/redux/*": ["src/redux/*"]
     }
   }
 }
