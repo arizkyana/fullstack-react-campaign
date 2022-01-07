@@ -28,7 +28,6 @@ function AuthController() {
         token,
       });
     } catch (error) {
-      console.log(error);
       if (error.toString().includes("E11000")) {
         return res.status(404).json({
           message: "the user's email has been registered!",
