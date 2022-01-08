@@ -4,6 +4,8 @@ import Link from "next/link";
 import useValidation from "../hooks/useValidation";
 import useFile from "../hooks/useFile";
 import { CampaignService } from "src/services";
+import { toast } from "react-toastify";
+import useToast from "@/libraries/toast";
 
 const pages = [
   { name: "Campaign", href: "/campaign", current: false },
@@ -13,6 +15,7 @@ const pages = [
 const CampaignCreateContainer = () => {
   const { initialValues, validationSchema } = useValidation();
   const { file, handleChangeFile, doUpload } = useFile();
+  const { success } = useToast();
 
   const handleOnSubmit = async (values) => {
     try {
@@ -22,6 +25,7 @@ const CampaignCreateContainer = () => {
       // create campaign
       const payload = { ...values, banner };
       await CampaignService.create(payload);
+      success("Berhasil membuat campaign baru");
     } catch (error) {
       console.log("error > ", error);
     }
@@ -177,7 +181,7 @@ const CampaignCreateContainer = () => {
             htmlFor="judul"
             className="inline-flex flex-col justify-start items-start w-full"
           >
-            <span className="inline-block mb-2">Upload foto</span>
+            <span className="inline-block mb-2">Upload Banner</span>
             <input
               type="file"
               name="file"

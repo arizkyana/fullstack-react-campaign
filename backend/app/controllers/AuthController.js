@@ -2,6 +2,16 @@ const UserModel = require("../models/user");
 const genToken = require("../libraries/token");
 
 function AuthController() {
+  const me = async (req, res) => {
+    const dataOfMe = {
+      _id: req.user._id,
+      email: req.user.email,
+      username: req.user.username,
+    };
+    res.status(200).json({
+      data: dataOfMe,
+    });
+  };
   const login = (req, res) => {
     const token = genToken(req.user);
     res.status(200).json({
@@ -42,6 +52,7 @@ function AuthController() {
   return {
     login,
     register,
+    me,
   };
 }
 

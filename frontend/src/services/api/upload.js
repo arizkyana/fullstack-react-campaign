@@ -14,8 +14,19 @@ function UploadService() {
     return response;
   };
 
+  const getImage = async (fileName) => {
+    const response = await callAPI({
+      url: "/files",
+      method: "get",
+      params: { fileName },
+      responseType: "blob",
+    });
+    return response;
+  };
+
   return {
     doUpload,
+    getImage,
   };
 }
 

@@ -17,6 +17,7 @@ module.exports = (app) => {
   // auth
   app.post("/api/login", requireLocal, AuthController.login);
   app.post("/api/register", AuthController.register);
+  app.get("/api/me", requireJWT, AuthController.me);
 
   // campaign
   app.get("/api/campaign", CampaignController.list);
@@ -31,5 +32,6 @@ module.exports = (app) => {
     [requireJWT, singleUpload("file")],
     UploadController.upload
   );
-  app.get("/api/files", requireJWT, UploadController.getFile);
+  app.get("/api/files", UploadController.getFile);
+  app.get("/api/image", UploadController.getImage);
 };
