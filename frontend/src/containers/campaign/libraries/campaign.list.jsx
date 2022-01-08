@@ -1,25 +1,59 @@
-/* This example requires Tailwind CSS v2.0+ */
-const people = [
-  {
-    name: "Jane Cooper",
-    title: "Regional Paradigm Technician",
-    role: "Admin",
-    email: "jane.cooper@example.com",
-  },
-  {
-    name: "Cody Fisher",
-    title: "Product Directives Officer",
-    role: "Owner",
-    email: "cody.fisher@example.com",
-  },
-  // More people...
-];
+import { useCampaignDispatcher } from "@/redux/reducers/campaign/campaign";
+import { Fragment } from "react";
+import Link from "next/link";
+import { Breadcrumb } from "@/components/breadcrumb";
+import { getCurrency } from "@/helpers/text";
 
-export default function Example() {
+const pages = [{ name: "Campaign", href: "/campaign", current: false }];
+
+const CampaignListContainer = () => {
+  const { campaigns } = useCampaignDispatcher();
+
+  const renderCampaigns = () => {
+    return (
+      campaigns.length > 0 &&
+      campaigns.map((item, index) => (
+        <tr
+          key={item._id}
+          className={index % 2 === 0 ? "bg-white" : "bg-gray-50"}
+        >
+          <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">
+            {item.judul}
+          </td>
+          <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+            {getCurrency(item.targetDonasi)}
+          </td>
+          <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+            {item.lokasi}
+          </td>
+          <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+            {item.pic}
+          </td>
+          <td className="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
+            <Link href={`/campaign/${item.slug}/update`} shallow passHref>
+              <a className="text-indigo-600 hover:text-indigo-900">Edit</a>
+            </Link>
+          </td>
+          <td className="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
+            <Link href={`/campaign/${item.slug}`} shallow passHref>
+              <a className="text-indigo-600 hover:text-indigo-900">View</a>
+            </Link>
+          </td>
+        </tr>
+      ))
+    );
+  };
+
   return (
-    <>
-      <div className="mb-6">
-        <h1 className="text-3xl font-bold">Daftar Campaign</h1>
+    <Fragment>
+      <Breadcrumb pages={pages} />
+      <div className="mb-6 flex justify-between items-center h-10">
+        <h1 className="text-2xl font-bold">Daftar Campaign</h1>
+        <Link href="/campaign/create" passHref shallow>
+          <a className="h-full text-sm inline-flex justify-center items-center px-6 rounded-lg bg-blue-600 text-white hover:bg-blue-700 font-bold">
+            Buat baru
+          </a>
+        </Link>
       </div>
       <div className="flex flex-col">
         <div className="-my-2 overflow-x-auto sm:-mx-6 lg:-mx-8">
@@ -55,44 +89,19 @@ export default function Example() {
                     <th scope="col" className="relative px-6 py-3">
                       <span className="sr-only">Edit</span>
                     </th>
+                    <th scope="col" className="relative px-6 py-3">
+                      <span className="sr-only">View</span>
+                    </th>
                   </tr>
                 </thead>
-                <tbody>
-                  {people.map((person, personIdx) => (
-                    <tr
-                      key={person.email}
-                      className={
-                        personIdx % 2 === 0 ? "bg-white" : "bg-gray-50"
-                      }
-                    >
-                      <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">
-                        {person.name}
-                      </td>
-                      <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
-                        {person.title}
-                      </td>
-                      <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
-                        {person.email}
-                      </td>
-                      <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
-                        {person.role}
-                      </td>
-                      <td className="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
-                        <a
-                          href="#"
-                          className="text-indigo-600 hover:text-indigo-900"
-                        >
-                          Edit
-                        </a>
-                      </td>
-                    </tr>
-                  ))}
-                </tbody>
+                <tbody>{renderCampaigns()}</tbody>
               </table>
             </div>
           </div>
         </div>
       </div>
-    </>
+    </Fragment>
   );
-}
+};
+
+export default CampaignListContainer;

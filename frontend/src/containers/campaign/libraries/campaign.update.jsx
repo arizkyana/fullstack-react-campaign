@@ -1,7 +1,16 @@
+import { Breadcrumb } from "@/components/breadcrumb";
 import { Form, Formik } from "formik";
+import Link from "next/link";
+import { useRouter } from "next/router";
 import useValidation from "../hooks/useValidation";
 
 const CampaignUpdateContainer = () => {
+  const { query } = useRouter();
+  const { id } = query;
+  const pages = [
+    { name: "Campaign", href: "/campaign", current: false },
+    { name: "Ubah campaign", href: `/campaign/${id}/update`, current: false },
+  ];
   const { initialValues, validationSchema } = useValidation();
   const handleOnSubmit = () => {};
   return (
@@ -13,6 +22,7 @@ const CampaignUpdateContainer = () => {
       {({ handleSubmit, handleBlur, handleChange, errors, values }) => (
         <Form className="">
           <div className="mb-6">
+            <Breadcrumb pages={pages} />
             <h1 className="text-3xl font-bold">Ubah Campaign </h1>
           </div>
           <div className="flex justify-between items-start space-x-2">
@@ -132,12 +142,14 @@ const CampaignUpdateContainer = () => {
             </div>
           </div>
           <div className="mt-6 space-x-2 text-right">
-            <button
-              type="button"
-              className="rounded-lg py-2 px-6 text-gray-600 bg-white font-semibold  hover:text-gray-700"
-            >
-              Batal
-            </button>
+            <Link href="/campaign" passHref shallow>
+              <button
+                type="button"
+                className="rounded-lg py-2 px-6 text-gray-600 bg-white font-semibold  hover:text-gray-700"
+              >
+                Batal
+              </button>
+            </Link>
             <button
               type="submit"
               className="rounded-lg py-2 px-6 text-white font-semibold bg-blue-600 hover:bg-blue-700"

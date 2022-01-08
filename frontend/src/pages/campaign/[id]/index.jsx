@@ -1,11 +1,17 @@
 import { CampaignDetailContainer } from "@/containers/campaign";
 import { LayoutAdmin } from "@/components/layouts";
+import Head from "next/head";
 
 const CampaignCreatePage = () => {
   return (
-    <LayoutAdmin>
-      <CampaignDetailContainer />
-    </LayoutAdmin>
+    <>
+      <Head>
+        <title>Detail Campaign</title>
+      </Head>
+      <LayoutAdmin>
+        <CampaignDetailContainer />
+      </LayoutAdmin>
+    </>
   );
 };
 

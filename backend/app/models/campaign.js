@@ -3,6 +3,7 @@ const Schema = mongoose.Schema;
 
 // Define model
 const CampaignSchema = new Schema({
+  banner: Schema.Types.String,
   slug: {
     type: Schema.Types.String,
     unique: true,

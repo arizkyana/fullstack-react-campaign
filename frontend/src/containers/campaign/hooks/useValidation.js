@@ -12,7 +12,7 @@ const useValidation = () => {
 
   const validationSchema = Yup.object().shape({
     judul: Yup.string().required(),
-    deskripsi: Yup.string().required().min(50),
+    deskripsi: Yup.string().required().min(3),
     targetDonasi: Yup.number().required().min(100000),
     tanggalAkhir: Yup.string().required(),
     lokasi: Yup.string().required(),

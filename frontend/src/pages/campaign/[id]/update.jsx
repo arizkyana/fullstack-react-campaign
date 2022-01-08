@@ -1,11 +1,17 @@
 import { CampaignUpdateContainer } from "@/containers/campaign";
 import { LayoutAdmin } from "@/components/layouts";
+import Head from "next/head";
 
 const CampaignUpdatePage = () => {
   return (
-    <LayoutAdmin>
-      <CampaignUpdateContainer />
-    </LayoutAdmin>
+    <>
+      <Head>
+        <title>Update Campaign</title>
+      </Head>
+      <LayoutAdmin>
+        <CampaignUpdateContainer />
+      </LayoutAdmin>
+    </>
   );
 };
 

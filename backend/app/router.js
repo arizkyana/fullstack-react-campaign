@@ -1,12 +1,14 @@
+// passport middleware
+const { requireJWT, requireLocal } = require("./libraries/passport");
+
+// upload middleware
+const { singleUpload } = require("./libraries/upload");
+
+// app controllers
 const HomeController = require("./controllers/HomeController");
 const AuthController = require("./controllers/AuthController");
 const CampaignController = require("./controllers/CampaignController");
-
-require("./libraries/passport");
-const passport = require("passport");
-
-const requireJWT = passport.authenticate("jwt", { session: false });
-const requireLocal = passport.authenticate("local", { session: false });
+const UploadController = require("./controllers/UploadController");
 
 module.exports = (app) => {
   // home
@@ -17,9 +19,17 @@ module.exports = (app) => {
   app.post("/api/register", AuthController.register);
 
   // campaign
-  app.get("/api/campaign", requireJWT, CampaignController.list);
-  app.get("/api/campaign/:id", requireJWT, CampaignController.view);
+  app.get("/api/campaign", CampaignController.list);
+  app.get("/api/campaign/:slug", CampaignController.view);
   app.post("/api/campaign", requireJWT, CampaignController.create);
-  app.put("/api/campaign/:id", requireJWT, CampaignController.update);
-  app.delete("/api/campaign/:id", requireJWT, CampaignController.remove);
+  app.put("/api/campaign/:slug", requireJWT, CampaignController.update);
+  app.delete("/api/campaign/:slug", requireJWT, CampaignController.remove);
+
+  // upload
+  app.post(
+    "/api/upload",
+    [requireJWT, singleUpload("file")],
+    UploadController.upload
+  );
+  app.get("/api/files", requireJWT, UploadController.getFile);
 };

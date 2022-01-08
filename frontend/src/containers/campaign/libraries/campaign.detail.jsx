@@ -1,12 +1,23 @@
+import { Breadcrumb } from "@/components/breadcrumb";
 import { Form, Formik } from "formik";
+import { useRouter } from "next/router";
 import useValidation from "../hooks/useValidation";
 
 const CampaignDetailContainer = () => {
+  const { query } = useRouter();
+  const { id } = query;
+  const pages = [
+    { name: "Campaign", href: "/campaign", current: false },
+    { name: "Detail campaign", href: `/campaign/${id}`, current: false },
+  ];
+
   const { initialValues, validationSchema } = useValidation();
   const handleOnSubmit = () => {};
+
   return (
     <div>
       <div className="mb-6">
+        <Breadcrumb pages={pages} />
         <h1 className="text-3xl font-bold">Detail Campaign</h1>
       </div>
       <div className="flex justify-between items-start space-x-2">

@@ -2,16 +2,30 @@ const CampaignModel = require("../models/campaign");
 
 function CampaignController() {
   const list = async (req, res) => {
-    const campaignList = await CampaignModel.find();
+    const { limit, offset } = req.query;
+    const campaignList = await CampaignModel.find()
+      .limit(parseInt(limit))
+      .skip(parseInt(offset))
+      .sort({
+        createdAt: "desc",
+      });
+    const total = await CampaignModel.find().count();
     res.status(200).json({
+      meta: {
+        total,
+        limit: parseInt(limit),
+        offset: parseInt(offset),
+      },
       data: campaignList,
     });
   };
 
   const view = async (req, res) => {
-    const { id } = req.params;
+    const { slug } = req.params;
     try {
-      const campaign = await CampaignModel.findOne({ _id: id });
+      const campaign = await CampaignModel.findOne({
+        slug,
+      });
       if (!campaign)
         return res.status(200).json({
           message: "campaign not found",
@@ -21,6 +35,7 @@ function CampaignController() {
         data: campaign,
       });
     } catch (error) {
+      console.log(error);
       return res.status(200).json({
         message: "failed get campaign",
       });
@@ -28,8 +43,15 @@ function CampaignController() {
   };
 
   const create = async (req, res) => {
-    const { judul, deskripsi, targetDonasi, tanggalAkhir, lokasi, pic } =
-      req.body;
+    const {
+      judul,
+      deskripsi,
+      targetDonasi,
+      tanggalAkhir,
+      lokasi,
+      pic,
+      banner,
+    } = req.body;
 
     try {
       const newCampaign = new CampaignModel({
@@ -39,6 +61,7 @@ function CampaignController() {
         tanggalAkhir,
         lokasi,
         pic,
+        banner,
         createdAt: new Date(),
         updatedAt: new Date(),
         createdBy: req.user._id,
@@ -61,13 +84,20 @@ function CampaignController() {
   };
 
   const update = async (req, res) => {
-    const { id } = req.params;
-    const { judul, deskripsi, targetDonasi, tanggalAkhir, lokasi, pic } =
-      req.body;
+    const { slug } = req.params;
+    const {
+      judul,
+      deskripsi,
+      targetDonasi,
+      tanggalAkhir,
+      lokasi,
+      pic,
+      banner,
+    } = req.body;
 
     try {
       const updated = await CampaignModel.findOneAndUpdate(
-        { _id: id },
+        { slug },
         {
           $set: {
             judul,
@@ -76,6 +106,7 @@ function CampaignController() {
             tanggalAkhir,
             lokasi,
             pic,
+            banner,
             updatedAt: new Date(),
           },
         },
@@ -97,9 +128,9 @@ function CampaignController() {
   };
 
   const remove = async (req, res) => {
-    const { id } = req.params;
+    const { slug } = req.params;
     try {
-      await CampaignModel.findOneAndRemove({ _id: id });
+      await CampaignModel.findOneAndRemove({ slug });
       return res.status(200).json({
         message: "success remove campaign",
       });

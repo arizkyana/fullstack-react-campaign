@@ -1,12 +1,15 @@
 const { network } = require("./app/configs");
 const bodyParser = require("body-parser");
 const express = require("express");
+const cors = require("cors");
 const router = require("./app/router");
 const database = require("./app/libraries/database");
+
 const app = express();
 
-app.use(bodyParser.urlencoded({ extended: false }));
+app.use(bodyParser.urlencoded({ extended: true }));
 app.use(express.json());
+app.use(cors("*"));
 
 router(app);
 

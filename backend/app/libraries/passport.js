@@ -46,5 +46,14 @@ const localAuth = new LocalStrategy({ usernameField: "email" }, function (
     }
   );
 });
+
 passport.use(jwtAuth);
 passport.use(localAuth);
+
+const requireJWT = passport.authenticate("jwt", { session: false });
+const requireLocal = passport.authenticate("local", { session: false });
+
+module.exports = {
+  requireJWT,
+  requireLocal,
+};

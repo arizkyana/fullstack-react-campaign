@@ -6,7 +6,9 @@
     "paths": {
       "@/components/*": ["src/components/*"],
       "@/containers/*": ["src/containers/*"],
-      "@/redux/*": ["src/redux/*"]
+      "@/redux/*": ["src/redux/*"],
+      "@/libraries/*": ["src/libraries/*"],
+      "@/helpers/*": ["src/helpers/*"]
     }
   }
 }
